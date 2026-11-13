@@ -357,20 +357,20 @@ class PermissionScreen(ModalScreen[str]):
         request = self.request
         text = Text()
         text.append("● 权限确认\n", style="bold #e5c07b")
-        text.append("工具  ", style="#6e6d72")
+        text.append("工具  ", style="#8a8f98")
         text.append(f"{request.tool}\n", style="bold #d7dae0")
         if request.action and request.action != request.tool:
-            text.append("动作  ", style="#6e6d72")
+            text.append("动作  ", style="#8a8f98")
             text.append(f"{request.action}\n", style="#d7dae0")
-        text.append("目标  ", style="#6e6d72")
+        text.append("目标  ", style="#8a8f98")
         text.append(f"{request.target}\n", style="#50b7c2")
         if request.reason:
-            text.append("原因  ", style="#6e6d72")
+            text.append("原因  ", style="#8a8f98")
             text.append(f"{request.reason}\n", style="#b28443")
         if request.hint:
-            text.append("建议  ", style="#6e6d72")
+            text.append("建议  ", style="#8a8f98")
             text.append(f"{request.hint}\n", style="#8a8f98")
-        text.append("\nEsc 拒绝 · A 允许一次 · S 本会话允许", style="#5f636d")
+        text.append("\nEsc 拒绝 · A 允许一次 · S 本会话允许", style="#8a8f98")
         with Vertical(id="permission-dialog"):
             yield Static(text, id="permission-text")
             with Horizontal(id="permission-buttons"):

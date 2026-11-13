@@ -57,6 +57,7 @@ from nextcoder.tui.completion import (
 )
 from nextcoder.tui.screens import (
     MODE_INFO,
+    MODE_STYLES,
     ConfigScreen,
     HelpScreen,
     PermissionModeScreen,
@@ -95,10 +96,6 @@ def _stop_label(reason: str) -> str:
 
 _MODE_MARKS = {name: info[0] for name, info in MODE_INFO.items()}
 _MODE_NAMES = {name: info[1] for name, info in MODE_INFO.items()}
-_MODE_STYLES = {
-    "manual": "#50b7c2", "workspace": "#7bba55",
-    "auto": "#e5c07b", "bypass": "#c85f5f",
-}
 
 _COMPOSER_HINT = (
     "Enter 发送 · Shift+Enter 换行 · / 命令 · @ 文件 · ↑↓ 历史 · Ctrl-C 停止/退出")
@@ -1178,7 +1175,7 @@ class NextCoderApp(App):
             model = self.settings.llm_model or "未配置"
             parts.append((f"{profile}/{model}", "#e5c07b"))
             mode = self.settings.permission_mode
-            mode_style = _MODE_STYLES.get(mode, "#8a8f98")
+            mode_style = MODE_STYLES.get(mode, "#8a8f98")
             parts.append((f"{_MODE_MARKS.get(mode, '●')} "
                           f"{_MODE_NAMES.get(mode, mode)}", mode_style))
             parts.append((self._sandbox_label(), self._sandbox_style()))

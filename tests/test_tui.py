@@ -5,6 +5,7 @@ import time
 from types import SimpleNamespace
 
 import pytest
+from rich.align import Align
 from textual.widgets import Footer, Markdown, Static
 
 from nextcoder.runtime.events import (
@@ -37,6 +38,7 @@ from nextcoder.tui.screens import (
     build_configured_settings,
     effort_from_settings,
 )
+from nextcoder.tui.welcome_art import tier_for, welcome_renderable
 from nextcoder.tui.widgets import ComposerTextArea, PermissionScreen, cache_label
 
 
@@ -276,6 +278,42 @@ def test_file_mention_suggestions_and_tab_accept(tmp_path):
             await pilot.press("tab")
             await pilot.pause()
             assert composer.text == "see @src/app.py "
+
+    asyncio.run(scenario())
+
+
+def test_welcome_art_picks_tier_for_terminal_size():
+    assert tier_for(120, 40) == "hero"
+    assert tier_for(80, 24) == "medium"
+    assert tier_for(56, 24) == "compact"
+
+    hero = welcome_renderable(120, 40)
+    assert isinstance(hero, Align)
+    assert "██" in hero.renderable.plain
+    medium = welcome_renderable(80, 24)
+    assert "██" in medium.renderable.plain
+    compact = welcome_renderable(56, 24)
+    assert compact.renderable.plain.strip() == ">_  NextCoder"
+
+
+@pytest.mark.parametrize(("size", "marker"), [
+    ((120, 40), "██"),
+    ((80, 24), "██"),
+    ((56, 24), ">_  NextCoder"),
+])
+def test_welcome_logo_follows_terminal_size(tmp_path, size, marker):
+    task = tmp_path / "task"
+    task.mkdir()
+    app = tui_app.NextCoderApp(_settings(), task_dir=task)
+
+    async def scenario():
+        async with app.run_test(size=size) as pilot:
+            await pilot.pause()
+            logo = app.screen.query_one("#welcome-logo", Static)
+            plain = logo.renderable.renderable.plain
+            assert marker in plain
+            lines = len(plain.rstrip("\n").splitlines())
+            assert logo.size.height >= lines
 
     asyncio.run(scenario())
 

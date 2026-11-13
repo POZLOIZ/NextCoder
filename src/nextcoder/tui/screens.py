@@ -9,6 +9,7 @@ from pydantic import SecretStr
 from rich.text import Text
 from textual.app import ComposeResult
 from textual.containers import Horizontal, Vertical, VerticalScroll
+from textual.css.query import NoMatches
 from textual.screen import ModalScreen
 from textual.widgets import (
     Button,
@@ -30,6 +31,7 @@ from nextcoder.model_config import (
 from nextcoder.settings import Settings
 from nextcoder.tools.commands import bwrap_status
 from nextcoder.tui.completion import COMMANDS
+from nextcoder.tui.welcome_art import welcome_renderable
 
 MODE_INFO: dict[str, tuple[str, str, str]] = {
     "manual": (
@@ -50,6 +52,13 @@ MODE_INFO: dict[str, tuple[str, str, str]] = {
         "◆", "完全放行",
         "除不可逆命令外全部放行。只在你完全信任的隔离环境里使用。",
     ),
+}
+
+MODE_STYLES: dict[str, str] = {
+    "manual": "#50b7c2",
+    "workspace": "#7bba55",
+    "auto": "#e5c07b",
+    "bypass": "#c85f5f",
 }
 
 MANUAL_PROFILE = "__manual__"
@@ -168,8 +177,20 @@ def build_configured_settings(
     return base.model_copy(update=updates)
 
 
+def _display_path(path: Path) -> str:
+    """启动页只显示一个短路径；完整路径仍在会话和报告里。"""
+    try:
+        relative = path.resolve().relative_to(Path.home())
+        text = "~" if str(relative) == "." else f"~/{relative}"
+    except ValueError:
+        text = str(path)
+    if len(text) > 44:
+        text = f"…{text[-43:]}"
+    return text
+
+
 class WelcomeScreen(ModalScreen[dict]):
-    """启动页：新建、最近会话、配置、帮助与退出。"""
+    """启动页：新建、最近会话、配置、权限与退出。"""
 
     BINDINGS = [
         ("n", "new_session", "新建会话"),
@@ -193,52 +214,70 @@ class WelcomeScreen(ModalScreen[dict]):
         options: list[Option] = [
             Option(Text("＋  新建会话", style="bold #7bba55"), id="new"),
         ]
-        for summary in self.sessions[:6]:
+        for summary in self.sessions[:3]:
             title = summary.title or summary.preview or "未命名会话"
             prompt = Text()
             prompt.append("›  ", style="#50b7c2")
             prompt.append(title, style="#d7dae0")
             if summary.created_at:
-                prompt.append(f"  {summary.created_at}", style="#6e6d72")
+                prompt.append(f"  {summary.created_at}", style="#8a8f98")
             options.append(Option(prompt, id=f"load:{summary.session_id}"))
         if not self.sessions:
             options.append(Option(
-                Text("   暂无历史会话", style="#5f636d"), disabled=True))
+                Text("   暂无历史会话", style="#8a8f98"), disabled=True))
         options.extend([
-            Option(Text("≡  配置 · 模型 / 权限 / 沙箱", style="#e5c07b"),
-                   id="config"),
-            Option(Text(f"{mode[0] if mode else '●'}  权限模式 · "
-                        f"{mode[1] if mode else self.settings.permission_mode}",
-                        style="#50b7c2"), id="mode"),
-            Option(Text("?  帮助与快捷键", style="#8a8f98"), id="help"),
+            Option(Text("≡  配置", style="#e5c07b"), id="config"),
+            Option(Text(f"{mode[0] if mode else '●'}  权限模式",
+                        style=MODE_STYLES.get(
+                            self.settings.permission_mode, "#50b7c2")),
+                   id="mode"),
             Option(Text("×  退出", style="#c85f5f"), id="quit"),
         ])
 
         mode_label = mode[1] if mode else self.settings.permission_mode
         sandbox = "开" if self.settings.command_sandbox else "关"
-        meta = Text()
-        meta.append("◆ NextCoder\n", style="bold #7bba55")
-        meta.append("模型  ", style="#6e6d72")
+        meta = Text(justify="center")
         meta.append(f"{self.settings.model_profile or 'custom'} / "
                     f"{self.settings.llm_model or '未配置'}", style="#e5c07b")
-        meta.append("   权限  ", style="#6e6d72")
-        meta.append(mode_label, style="#50b7c2")
-        meta.append("   沙箱  ", style="#6e6d72")
-        meta.append(sandbox, style="#7bba55" if self.settings.command_sandbox
+        meta.append("   ·   ", style="#30343d")
+        meta.append(mode_label,
+                    style=MODE_STYLES.get(
+                        self.settings.permission_mode, "#50b7c2"))
+        meta.append("   ·   ", style="#30343d")
+        meta.append(f"沙箱{sandbox}",
+                    style="#7bba55" if self.settings.command_sandbox
                     else "#8a8f98")
-        meta.append("\n目录  ", style="#6e6d72")
-        meta.append(str(self.task_dir), style="#8a8f98")
         with Vertical(id="welcome-dialog"):
+            yield Static(
+                welcome_renderable(self.app.size.width, self.app.size.height),
+                id="welcome-logo", markup=False)
             yield Static(meta, id="welcome-meta")
             yield OptionList(*options, id="welcome-list")
             yield Static(Text(
-                "↑↓ 选择 · Enter 打开 · N 新建 · C 配置 · M 权限 · ? 帮助 · Q 退出",
-                style="#5f636d"), id="welcome-keys")
+                "↑↓ 选择 · Enter 打开 · ? 帮助 · Q 退出",
+                style="#8a8f98"), id="welcome-keys")
 
     def on_mount(self) -> None:
+        try:
+            dialog = self.query_one("#welcome-dialog", Vertical)
+            dialog.border_subtitle = _display_path(self.task_dir)
+        except NoMatches:
+            pass
+        self._sync_logo()
         listing = self.query_one("#welcome-list", OptionList)
         listing.highlighted = 0
         listing.focus()
+
+    def on_resize(self) -> None:
+        self._sync_logo()
+
+    def _sync_logo(self) -> None:
+        try:
+            logo = self.query_one("#welcome-logo", Static)
+        except NoMatches:
+            return
+        logo.update(
+            welcome_renderable(self.app.size.width, self.app.size.height))
 
     def on_option_list_option_selected(
             self, event: OptionList.OptionSelected) -> None:
@@ -295,11 +334,11 @@ class SessionPickerScreen(ModalScreen[dict | None]):
             prompt.append(summary.title or summary.preview or "未命名会话",
                           style="#d7dae0")
             if summary.created_at:
-                prompt.append(f"  {summary.created_at}", style="#6e6d72")
+                prompt.append(f"  {summary.created_at}", style="#8a8f98")
             options.append(Option(prompt, id=f"load:{summary.session_id}"))
         if not self.sessions:
             options.append(Option(
-                Text("   暂无历史会话", style="#5f636d"), disabled=True))
+                Text("   暂无历史会话", style="#8a8f98"), disabled=True))
         options.append(Option(Text("×  取消", style="#8a8f98"), id="cancel"))
         with Vertical(id="session-dialog"):
             yield Static(Text("› 切换会话", style="bold #7bba55"),
@@ -363,7 +402,7 @@ class PermissionModeScreen(ModalScreen[str | None]):
             yield Static(Text(
                 "↑↓ 选择 · Enter 应用 · E 逐项确认 · W 工作区 · "
                 "A 沙箱内自动 · B 完全放行 · Esc 取消",
-                style="#5f636d"), classes="dialog-hint")
+                style="#8a8f98"), classes="dialog-hint")
 
     def on_mount(self) -> None:
         listing = self.query_one("#mode-list", OptionList)

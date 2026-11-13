@@ -16,13 +16,12 @@ uv run nextcoder tui --task-dir /path/to/repo
 启动页只保留日常需要的入口：
 
 - **新建会话**：创建一次新的运行，后台复制基线，界面不会卡住；
-- **最近会话**：显示根据第一条请求生成的标题和时间，空会话不占位置；
+- **最近会话**：显示根据第一条请求生成的标题和时间，最多三条，空会话不占位置；
 - **配置**：模型 profile、endpoint、模型名、reasoning effort、权限模式、沙箱开关；
 - **权限模式**：四档权限，当前档位会高亮并显示说明；
-- **帮助与快捷键**；
 - **退出**。
 
-底部会显示当前模型、权限、沙箱状态和任务目录。启动页没有任何功能清单式文案。
+字标用色块拼出 N，窗口足够大时显示完整像素字标，宽度不足时退回单行 `>_ NextCoder`。字标下方一行显示当前 profile / 模型、权限模式和沙箱状态；任务目录显示在弹窗右下角的边框上。帮助仍然可以按 `?` 或 `F1` 打开。
 
 ## 快捷键
 
@@ -51,10 +50,10 @@ uv run nextcoder tui --task-dir /path/to/repo
 | `/config` | 配置 endpoint、模型、effort、权限与沙箱 |
 | `/model` | 切换模型 profile / endpoint |
 | `/mode [manual\|workspace\|auto\|bypass]` | 切换权限模式 |
-| `/sandbox [on\|off\|network on\|off\|status]` | 查看或切换 bubblewrap 沙箱 |
+| `/sandbox [on\|off\|network on\|off\|strict on\|off\|status]` | 查看或切换 bubblewrap 沙箱；`strict` 控制 fail-closed |
 | `/plan` | 显示或隐藏任务清单面板 |
 | `/compact` | 压缩当前会话上下文 |
-| `/export [path]` | 把当前对话导出为 Markdown |
+| `/export [path]` | 把当前对话导出为 Markdown；省略路径时写入 `.nextcoder/exports/`，路径不能超出任务目录 |
 | `/clear` | 清空屏幕（不删除会话记录） |
 | `/status` | 显示当前会话、模型与运行状态 |
 | `/quit` | 退出 |
@@ -74,7 +73,7 @@ uv run nextcoder tui --task-dir /path/to/repo
 - 每轮有独立的 `ROUND NN` 标题、状态、模型/权限标记和 footer。
 - 工具调用显示名称、参数摘要、状态、耗时和完整日志路径；展开/折叠由界面控制。
 - 任务清单面板直接读 `.nextcoder/task-plan.json`，按 revision 去重刷新。
-- 运行中会显示 `正在创建会话…`、`等待模型`、`运行命令`、`压缩中`、`子 agent 运行中` 等活动状态。
+- 运行中会显示「正在创建会话…」「模型生成中…」「执行工具：…」「工具完成：…」「压缩中，请稍候」以及子 agent 状态；需要确认的动作会单独弹窗。
 
 ### 缓存显示
 

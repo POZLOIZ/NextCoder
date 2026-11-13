@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "nextcoder"
 version = "0.2.0.dev0"
-description = "A terminal coding agent that works inside your repository."
+description = "终端里的编码助手：在现有仓库中读写代码、运行测试，每一轮留下可审查的补丁和报告。"
 requires-python = ">=3.12,<3.13"
 dependencies = [
   "langchain>=1.0,<2",

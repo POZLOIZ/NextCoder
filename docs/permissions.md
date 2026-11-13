@@ -21,7 +21,7 @@ NextCoder 把「要不要做」和「能不能做」分成两层：
 - **敏感文件**（`.env`、密钥、凭证等）在 `manual`、`workspace`、`auto` 会询问，不会自动读写；`bypass` 放行。
 - **删除**在 `manual`、`workspace`、`auto` 都会询问；`bypass` 才自动放行。
 - **不可逆命令底线**在所有模式都直接拒绝，而且不会弹出询问：`rm -rf /`、`mkfs`、`dd` 写设备、提权、fork 炸弹等。
-- **非交互入口**（`nextcoder run`、脚本调用）没有询问界面，需要询问的动作一律按拒绝处理。`chat` 和 `tui` 才会弹出「允许一次 / 本会话允许 / 拒绝」。
+- **非交互入口**（`nextcoder run`、脚本调用）没有询问界面，需要询问的动作一律按拒绝处理。`tui` 会弹出「允许一次 / 本会话允许 / 拒绝」，`chat` 在命令行里询问 `[o]nce/[s]ession/[d]eny`。
 - 旧配置里的 `standard` 自动迁移为 `workspace`，`aggressive` 自动迁移为 `bypass`。
 
 `auto` 判断「有真实隔离」的依据，满足任意一条即可：
@@ -32,7 +32,7 @@ NextCoder 把「要不要做」和「能不能做」分成两层：
 
 三条都不满足时，`auto` 不会假装安全，会退回询问。
 
-![权限模式选择](assets/tui-permissions.png)
+![权限模式选择](assets/tui-permission-modes.png)
 
 ## 规则文件
 
@@ -65,6 +65,8 @@ NextCoder 把「要不要做」和「能不能做」分成两层：
 2. 选择「允许一次」只放行这一次；「本会话允许」把 `(动作, 目标)` 放进当前会话内存，不写磁盘；
 3. 选「拒绝」、按 Esc 或直接退出，都按拒绝处理；
 4. 请求和回答都会写 `rollout.jsonl`，便于回看。
+
+![权限确认](assets/tui-permission-prompt.png)
 
 ## bubblewrap 沙箱
 

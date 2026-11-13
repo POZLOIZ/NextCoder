@@ -1,0 +1,41 @@
+# 模型 profile：同一个 NextCoder 可切换不同 OpenAI 兼容 provider。
+# 密钥只写环境变量名，不写明文；可用 --profile 或 NEXTCODER_MODEL_PROFILE 选择。
+#
+#   nextcoder models                       # 列出 profile
+#   nextcoder --profile work chat          # 使用下面的 work profile
+#
+# 不指定 profile 时：环境已给 NEXTCODER_LLM_BASE_URL/MODEL 就用环境；
+# 否则自动选 primary（没有 primary 时选第一条）。
+
+[[models]]
+name = "primary"
+provider = "deepseek"
+protocol = "openai-compatible"
+base_url = "https://api.deepseek.com"
+model = "deepseek-chat"
+api_key_env = "DEEPSEEK_API_KEY"
+thinking = "disabled"
+# DeepSeek 不需要 OpenCode 的会话头。
+session_header = ""
+# 厂商声明的上下文窗口；NextCoder 用它作为 application_input_token_budget。
+context_window = 210000
+# 本项目的单次生成预算；低于服务上限。
+max_output_tokens = 4096
+
+# 第二个 provider：任何 OpenAI 兼容端点都可以这样加。
+# [[models]]
+# name = "work"
+# provider = "openrouter"
+# base_url = "https://openrouter.ai/api/v1"
+# model = "vendor/model-name"
+# api_key_env = "OPENROUTER_API_KEY"
+# thinking = "omit"
+# session_header = ""
+# context_window = 128000
+# max_output_tokens = 8192
+# headers = { "HTTP-Referer" = "https://example.com", "X-Title" = "NextCoder" }
+#
+# 可选 429 备援；三元组齐全才启用。
+# fallback_base_url = "https://api.deepseek.com"
+# fallback_model = "deepseek-chat"
+# fallback_api_key_env = "DEEPSEEK_FALLBACK_API_KEY"

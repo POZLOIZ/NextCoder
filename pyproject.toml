@@ -1,0 +1,48 @@
+[build-system]
+requires = ["hatchling>=1.27,<2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "nextcoder"
+version = "0.2.0.dev0"
+description = "A terminal coding agent that works inside your repository."
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "langchain>=1.0,<2",
+  "langchain-openai>=1.0,<2",
+  "langgraph>=1.0,<2",
+  "langgraph-checkpoint-sqlite>=3,<4",
+  "mcp>=2.3,<3",
+  "typer>=0.16,<1",
+  "rich>=14,<15",
+  "pydantic-settings>=2.10,<3",
+  "httpx>=0.28,<1",
+  "tiktoken>=0.11,<1",
+  "pyyaml>=6,<7",
+]
+
+[project.optional-dependencies]
+# 交互 TUI 是可选安装：不装也能用 nextcoder chat（含 --stream）。
+tui = ["textual>=0.80,<1"]
+
+[dependency-groups]
+dev = ["pytest>=8,<10", "pytest-asyncio>=1,<2", "ruff>=0.14,<1",
+       "textual>=0.80,<1"]
+
+[project.scripts]
+nextcoder = "nextcoder.cli:app"
+
+[project.urls]
+Homepage = "https://github.com/POZLOIZ/NextCoder"
+Repository = "https://github.com/POZLOIZ/NextCoder"
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+

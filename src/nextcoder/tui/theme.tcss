@@ -1,0 +1,454 @@
+/* NextCoder TUI：深色终端主题。颜色集中在这里，便于整体换肤。 */
+
+Screen {
+    background: #0f1014;
+    color: #cfd1d6;
+    layout: vertical;
+}
+
+#header-dock {
+    dock: top;
+    height: 2;
+    background: #0f1014;
+}
+
+#brand {
+    dock: none;
+    height: 1;
+    padding: 0 2;
+    background: #0f1014;
+    color: #cfd1d6;
+}
+
+#status {
+    dock: none;
+    height: 1;
+    padding: 0 2;
+    background: #0f1014;
+    color: #6e6d72;
+}
+
+#transcript {
+    height: 1fr;
+    padding: 1 2 0 2;
+    background: #0f1014;
+    scrollbar-size: 1 1;
+}
+
+#transcript Static {
+    background: transparent;
+}
+
+.welcome-card {
+    border: round #262a32;
+    padding: 1 2;
+    margin: 0 0 1 0;
+    background: #12141a;
+    height: auto;
+}
+
+.round-card {
+    border-left: solid #7bba55;
+    padding: 0 1;
+    margin: 1 0 0 0;
+    background: #0f1014;
+    height: auto;
+}
+
+.round-header {
+    height: 1;
+    background: transparent;
+    margin-bottom: 0;
+}
+
+.user-message {
+    margin: 1 0 0 0;
+    padding: 0 1;
+    background: #12161b;
+}
+
+.assistant-message {
+    margin: 0 0 0 0;
+    padding: 0 0 0 1;
+    background: transparent;
+}
+
+.tool-line {
+    height: auto;
+    padding: 0 1;
+    margin: 0;
+    background: transparent;
+}
+
+.system-note {
+    color: #8a8f98;
+    padding: 0 1;
+    margin: 0;
+    background: transparent;
+}
+
+.error-line {
+    color: #c85f5f;
+    padding: 0 1;
+    background: transparent;
+}
+
+.success-line {
+    color: #7bba55;
+    padding: 0 1;
+    background: transparent;
+}
+
+.round-footer {
+    height: auto;
+    margin: 0 0 1 0;
+    padding: 0 1;
+    color: #6e6d72;
+    background: transparent;
+}
+
+Markdown {
+    background: transparent;
+    color: #cfd1d6;
+    margin: 0;
+}
+
+MarkdownH1, MarkdownH2, MarkdownH3 {
+    color: #7bba55;
+    background: transparent;
+}
+
+MarkdownParagraph {
+    margin: 0 0 1 0;
+}
+
+MarkdownBlockQuote {
+    border-left: solid #3b3f4a;
+    color: #8a8f98;
+    margin: 0 0 1 1;
+}
+
+MarkdownFence {
+    background: #171a20;
+    border: solid #262a32;
+    margin: 0 0 1 0;
+}
+
+MarkdownTable {
+    background: #14161c;
+}
+
+#plan {
+    height: 7;
+    border: round #262a32;
+    padding: 0 1;
+    margin: 0 2 0 2;
+    background: #12141a;
+    overflow-y: auto;
+    scrollbar-size: 1 1;
+}
+
+#activity {
+    height: 1;
+    padding: 0 2;
+    color: #8a8f98;
+    background: #0f1014;
+}
+
+#bottom-dock {
+    dock: bottom;
+    height: auto;
+    background: #0f1014;
+}
+
+#suggestions {
+    display: none;
+    height: auto;
+    max-height: 9;
+    padding: 0 2;
+    background: #12141a;
+    border-top: solid #262a32;
+    color: #cfd1d6;
+}
+
+#composer {
+    height: 5;
+    padding: 0 2;
+    background: #0f1014;
+    border-top: solid #262a32;
+}
+
+#composer-area {
+    height: 3;
+    border: round #30343d;
+    background: #14161c;
+    color: #e6e7ea;
+    padding: 0 1;
+}
+
+#composer-area:focus {
+    border: round #7bba55;
+}
+
+#composer-hint {
+    height: 1;
+    color: #5f636d;
+    padding: 0 1;
+}
+
+Footer {
+    dock: none;
+    height: 1;
+    width: 100%;
+    background: #0f1014;
+    color: #6e6d72;
+}
+
+Footer > .footer--key {
+    color: #50b7c2;
+}
+
+Footer > .footer--description {
+    color: #5f636d;
+}
+
+/* ---- 弹窗 ---- */
+
+WelcomeScreen {
+    background: #0f1014;
+    align: center middle;
+}
+
+WelcomeScreen, SessionPickerScreen, PermissionModeScreen, HelpScreen,
+ConfigScreen, PermissionScreen {
+    align: center middle;
+}
+
+#welcome-dialog {
+    width: 96;
+    max-width: 96%;
+    height: auto;
+    max-height: 90%;
+    padding: 1 2;
+    background: #12141a;
+    border: round #30343d;
+}
+
+#welcome-meta {
+    height: auto;
+    padding: 0 1 1 1;
+    background: transparent;
+}
+
+#welcome-list, #session-list, #mode-list {
+    height: auto;
+    max-height: 18;
+    background: #0f1014;
+    border: none;
+    padding: 0;
+}
+
+#welcome-list > .option-list--option-highlighted,
+#session-list > .option-list--option-highlighted,
+#mode-list > .option-list--option-highlighted {
+    background: #1d2a1a;
+    color: #d7e8cf;
+}
+
+#welcome-keys, .dialog-hint {
+    height: auto;
+    color: #5f636d;
+    padding: 1 1 0 1;
+    background: transparent;
+}
+
+#mode-desc {
+    height: auto;
+    min-height: 2;
+    color: #8a8f98;
+    padding: 1 1 0 1;
+    background: transparent;
+}
+
+#session-dialog, #mode-dialog, #help-dialog, #config-dialog {
+    width: 100;
+    max-width: 96%;
+    height: auto;
+    max-height: 90%;
+    padding: 1 2;
+    background: #12141a;
+    border: round #30343d;
+}
+
+#help-dialog {
+    width: 112;
+    height: 85%;
+}
+
+#config-dialog {
+    width: 116;
+    height: 95%;
+}
+
+.dialog-title {
+    height: 1;
+    padding: 0 1;
+    background: transparent;
+}
+
+#help-body {
+    height: 1fr;
+    padding: 0 1;
+    background: transparent;
+    scrollbar-size: 1 1;
+}
+
+#config-body {
+    height: 1fr;
+    padding: 0 1;
+    background: transparent;
+    scrollbar-size: 1 1;
+}
+
+.field-label {
+    height: 1;
+    margin-top: 0;
+    color: #8a8f98;
+    background: transparent;
+}
+
+.form-row {
+    height: auto;
+    margin-top: 1;
+}
+
+.form-field {
+    width: 1fr;
+    height: auto;
+    padding-right: 1;
+}
+
+.profile-field {
+    width: 2fr;
+}
+
+.endpoint-field {
+    width: 3fr;
+}
+
+.model-field {
+    width: 2fr;
+}
+
+#config-dialog Input, #config-dialog Select {
+    width: 100%;
+}
+
+#config-dialog Select {
+    height: 3;
+}
+
+#config-dialog Input {
+    background: #0f1014;
+    border: round #30343d;
+    color: #e6e7ea;
+}
+
+#config-dialog Input:focus {
+    border: round #7bba55;
+}
+
+/* Select 内部已经有一层边框；外层再套 border 会把高度撑到 5 行，
+   40 行终端里标签也会被裁掉。这里只保留 SelectCurrent 的边框。 */
+#config-dialog Select {
+    background: #0f1014;
+    border: none;
+    padding: 0;
+}
+
+#config-dialog Select > SelectCurrent {
+    background: #0f1014;
+    border: tall #30343d;
+}
+
+#config-dialog Select:focus > SelectCurrent {
+    border: tall #7bba55;
+}
+
+#cfg-mode-desc {
+    height: auto;
+    min-height: 1;
+    color: #8a8f98;
+    background: transparent;
+    padding: 0 0 0 0;
+}
+
+#cfg-status, #cfg-sandbox-status {
+    height: auto;
+    min-height: 1;
+    color: #8a8f98;
+    background: transparent;
+    padding: 0 0 0 0;
+}
+
+#cfg-status {
+    min-height: 0;
+}
+
+.switch-grid {
+    height: auto;
+    padding: 0 1;
+}
+
+.switch-cell {
+    width: 1fr;
+    height: 3;
+    layout: horizontal;
+    align-vertical: middle;
+}
+
+.switch-cell Label {
+    height: 1;
+    padding: 0 1;
+    color: #cfd1d6;
+    background: transparent;
+}
+
+#config-dialog Switch {
+    background: #1a1d24;
+    border: tall #3a3f4a;
+}
+
+#config-dialog Switch .switch--slider {
+    color: #5b6170;
+    background: #0f1014;
+}
+
+#config-dialog Switch.-on .switch--slider {
+    color: #7bba55;
+}
+
+#config-buttons, #permission-buttons {
+    height: auto;
+    align-horizontal: right;
+    padding-top: 1;
+}
+
+#config-buttons Button, #permission-buttons Button {
+    margin-left: 1;
+}
+
+#permission-dialog {
+    width: 84;
+    max-width: 94%;
+    height: auto;
+    padding: 1 2;
+    background: #12141a;
+    border: round #b28443;
+}
+
+#permission-text {
+    height: auto;
+    padding: 0 1;
+    background: transparent;
+}

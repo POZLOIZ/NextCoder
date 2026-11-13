@@ -1,0 +1,13 @@
+.venv/
+.data/
+.env
+.env.*
+!.env.example
+config/models.local.toml
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+dist/
+build/
+

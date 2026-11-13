@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
+  <title id="title">NextCoder</title>
+  <desc id="desc">A terminal prompt mark for NextCoder</desc>
+  <rect width="128" height="128" rx="28" fill="#0b1220"/>
+  <rect x="1" y="1" width="126" height="126" rx="27" fill="none" stroke="#1e293b" stroke-width="2"/>
+  <path d="M36 40 L58 64 L36 88" fill="none" stroke="#22d3ee" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M70 88 H94" fill="none" stroke="#e2e8f0" stroke-width="9" stroke-linecap="round"/>
+</svg>

@@ -40,7 +40,7 @@ COMMANDS: tuple[SlashCommand, ...] = (
     SlashCommand("/model", "/model", "切换模型 profile / endpoint"),
     SlashCommand("/mode", "/mode [manual|workspace|auto|bypass]",
                  "逐项确认 / 工作区写入 / 沙箱内自动 / 完全放行"),
-    SlashCommand("/sandbox", "/sandbox [on|off|network on|off|status]",
+    SlashCommand("/sandbox", "/sandbox [on|off|network on|off|strict on|off|status]",
                  "查看或切换 bubblewrap 沙箱"),
     SlashCommand("/plan", "/plan", "显示或隐藏任务清单面板"),
     SlashCommand("/compact", "/compact", "压缩当前会话上下文"),
